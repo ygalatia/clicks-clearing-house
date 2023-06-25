@@ -1,23 +1,21 @@
 package domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Repository;
 
+@Document("clearinghouse_process")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClearingHouseProcess {
-    long processID;
-
-    Boolean isCleared;
-    String startDate;
-    String endDate;
-    Contract payload;
-
-    public ClearingHouseProcess(long processID, Boolean isCleared, String startDate, String endDate, Contract payload) {
-        this.processID = processID;
-        this.isCleared = isCleared;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.payload = payload;
-    }
+    @Id
+    String processID;
+    String processOwner;
+    Contract contractPayload;
 }

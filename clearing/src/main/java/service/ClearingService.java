@@ -2,18 +2,20 @@ package service;
 
 import domain.model.ClearingHouseProcess;
 import domain.model.Contract;
+import domain.model.ProcessRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClearingService {
 
-//    public Contract readContract(String payload){
-//        return payload;
-//    }
+    @Autowired
+    ProcessRepository processRepository;
 
-    public ClearingHouseProcess generateProcess(Boolean isCleared, String startDate, String endDate, Contract payload){
-        ClearingHouseProcess clearingHouseProcess = new ClearingHouseProcess(123, isCleared, startDate, endDate, payload);
-        return clearingHouseProcess;
+    public String generateProcess(String ownerID, Contract contractPayload){
+        processRepository.save(new ClearingHouseProcess("proc123", ownerID, contractPayload));
+        return "success creating process";
     }
 
 

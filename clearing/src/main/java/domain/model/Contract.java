@@ -1,21 +1,18 @@
 package domain.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Contract {
-
-    long contractId;
+    String contractId;
+    String providerId;
     Boolean isValid;
     String startDate;
     String endDate;
-
-    public Contract(long contractId, Boolean isValid, String startDate, String endDate) {
-        this.contractId = contractId;
-        this.isValid = isValid;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
 }

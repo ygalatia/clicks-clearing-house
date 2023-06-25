@@ -1,5 +1,6 @@
 package controller;
 
+import domain.model.ClearingHouseProcess;
 import domain.model.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,13 +20,19 @@ public class ClearingController {
         return "The Clearing Service";
     }
 
+    @GetMapping(path="/clearing/getProcess")
+    public ClearingHouseProcess getProcess(){
+        Contract dummy = new Contract("abc123", "connector123",true, "07-06-2023", "10-06-2023");
+        return new ClearingHouseProcess("abc123", dummy.getProviderId(), dummy);
+    }
+
     @PostMapping(path="/clearing/readContract")
     public Contract readContract(@RequestBody Contract contract){
        return contract;
     }
 
     @PostMapping(path="/clearing/generatePid")
-    public Long generateProcessID(@RequestBody Contract contract){
+    public String generateProcessID(@RequestBody Contract contract){
         Boolean isCleared = false;
         if (contract.getIsValid()){
             System.out.println("Transaction cleared");
@@ -35,6 +42,6 @@ public class ClearingController {
             System.out.println("Transaction cannot be cleared");
         }
 
-        return clearingService.generateProcess(true, contract.getStartDate(), contract.getEndDate(), contract).getProcessID();
+        return clearingService.generateProcess(contract.getProviderId(), contract);
     }
 }
