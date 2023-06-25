@@ -29,6 +29,17 @@ public class ClearingService {
         return generatedId;
     }
 
+    public ClearingHouseProcess getProcess(String processID){
+        if(isProcessExist(processID)){
+            logger.info("Fetching Clearing House Process");
+            ClearingHouseProcess clearingHouseProcess = processRepository.findById(processID).get();
+            return clearingHouseProcess;
+        }else {
+            logger.warning("Returning null");
+            return null;
+        }
+    }
+
     String pidGenerator(Contract contract){
         //TODO: Find better way to generate ID
         return contract.getProviderId()+"CH_PID"+contract.getContractId();

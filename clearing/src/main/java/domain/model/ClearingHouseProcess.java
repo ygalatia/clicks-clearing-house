@@ -17,5 +17,7 @@ public class ClearingHouseProcess {
     @Id
     String processID;
     String processOwner;
+
+    //TODO: make this immutable
     Contract contractPayload;
 }
