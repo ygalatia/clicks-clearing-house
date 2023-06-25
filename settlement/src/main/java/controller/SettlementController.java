@@ -3,7 +3,7 @@ package controller;
 import domain.ClearingHouseProcessStub;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import service.SettlementService;
 
@@ -21,16 +21,22 @@ public class SettlementController {
     }
 
     @GetMapping(path = "/settlement/settleTransaction")
-    public String settleTransaction(@RequestBody ClearingHouseProcessStub clearingHouseProcessStub) throws ParseException {
-        String message = "";
-        if(settlementService.isTransactionDischarged(clearingHouseProcessStub)){
-            message = "Transaction Settled";
+    public String settleTransaction(@RequestParam String processID) throws ParseException {
+        //TODO: Update settlement logics
+        ClearingHouseProcessStub clearingHouseProcessStub = settlementService.getProcessById(processID);
+        if(clearingHouseProcessStub != null) {
+            String message = "";
+            if (settlementService.isTransactionDischarged(clearingHouseProcessStub)) {
+                //TODO: Proceed Transaction
+                message = "Transaction Settled";
+            } else {
+                //TODO: Cancel/Deny transaction
+                message = "Transaction discharged";
+            }
+            return message;
+        } else{
+            return "Process Does Not Exist";
         }
-        else {
-            message = "Transaction discharged";
-        }
-
-        return message;
     }
 
 }
