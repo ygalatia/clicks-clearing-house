@@ -33,15 +33,6 @@ public class ClearingController {
 
     @PostMapping(path="/clearing/generatePid")
     public String generateProcessID(@RequestBody Contract contract){
-        Boolean isCleared = false;
-        if (contract.getIsValid()){
-            System.out.println("Transaction cleared");
-            isCleared = true;
-        }
-        else{
-            System.out.println("Transaction cannot be cleared");
-        }
-
-        return clearingService.generateProcess(contract.getProviderId(), contract);
+        return clearingService.generateProcess(contract);
     }
 }
