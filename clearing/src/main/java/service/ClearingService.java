@@ -19,7 +19,6 @@ public class ClearingService {
     ProcessRepository processRepository;
 
     public String generateProcess(Contract contractPayload){
-        //TODO: check if process already exist
         logger.info("Request Clearing House Process generation");
         String generatedId = pidGenerator(contractPayload);
         if (!isProcessExist(generatedId)){
@@ -31,6 +30,7 @@ public class ClearingService {
     }
 
     String pidGenerator(Contract contract){
+        //TODO: Find better way to generate ID
         return contract.getProviderId()+"CH_PID"+contract.getContractId();
     }
 
