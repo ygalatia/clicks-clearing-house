@@ -23,6 +23,7 @@ public class SettlementService {
         return clearingHouseProcessStub;
     }
     public boolean isTransactionDischarged(ClearingHouseProcessStub clearingHouseProcessStub) throws ParseException {
+        //TODO: Add user validation, only valid/authorised user able to make process
         boolean isDischarged = false;
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Date endDate = sdf.parse(clearingHouseProcessStub.contractPayload().endDate());

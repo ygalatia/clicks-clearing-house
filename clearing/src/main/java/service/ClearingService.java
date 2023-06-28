@@ -19,6 +19,7 @@ public class ClearingService {
     ProcessRepository processRepository;
 
     public String generateProcess(Contract contractPayload){
+        //TODO: Add user validation, only valid/authorised user able to make process
         logger.info("Request Clearing House Process generation");
         String generatedId = pidGenerator(contractPayload);
         if (!isProcessExist(generatedId)){
