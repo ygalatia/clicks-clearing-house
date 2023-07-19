@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns="http://camel.apache.org/schema/spring"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <route id="contractToClearingRoute">
+        <from uri="http://localhost:8080/clearing/"/>
+        <setHeader name="Content-Type">
+            <constant>application/json</constant>
+        </setHeader>
+        <to uri="http://localhost:8080/clearing/generatePid"/>
+        <log message="process ID generated ${header.processID}"></log>
+    </route>
+
+    <route id="clearingToSettlementRoute">
+        <from uri="http://localhost:8080/clearing/generatePid"/>
+        <setHeader name="Content-Type">
+            <constant>application/json</constant>
+        </setHeader>
+        <toD uri="http://localhost:8081/settlement/settleTransaction?processID=${header.processID}"/>
+        <log message="process ID generated ${header.processID}"></log>
+    </route>
+</routes>
