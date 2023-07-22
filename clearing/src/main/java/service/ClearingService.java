@@ -1,14 +1,15 @@
 package service;
 
+import domain.ClaimRequestStub;
 import domain.model.ClearingHouseProcess;
 import domain.model.Contract;
 import domain.model.ProcessRepository;
-import main.ClearingServiceApplication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.logging.LogManager;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Service
@@ -18,43 +19,83 @@ public class ClearingService {
     @Autowired
     ProcessRepository processRepository;
 
-    public String generateProcess(Contract contractPayload){
-        //TODO: Add user validation, only valid/authorised user able to make process
-        logger.info("Request Clearing House Process generation");
-        String generatedId = pidGenerator(contractPayload);
-        if (!isProcessExist(generatedId)){
-            logger.info("Generating new Clearing House Process");
-            processRepository.save(new ClearingHouseProcess(generatedId, contractPayload.getProviderId(), contractPayload));
+    @Autowired
+    private RestTemplate restTemplate;
+
+    private static String dataRouter_url= "http://localhost:8084/camel/clearinghouse";
+    private static String getClaimByAccused_uri= "/getClaimByAccused?accusedId=";
+
+    public Boolean clearTransaction(Contract contract){
+        if(validateConnector(contract.getConsumer())){
+            generateProcess(contract);
+            return true;
         }
-        logger.info("Clearing House Process is/already generated");
-        return generatedId;
+        else{
+            return false;
+        }
     }
 
-    public ClearingHouseProcess getProcess(String processID){
-        if(isProcessExist(processID)){
+    public String generateProcess(Contract contract){
+        logger.info("Request Clearing House Process' generation");
+        Optional<ClearingHouseProcess> process = getProcessByContractId(contract.getId());
+        if (process.isEmpty()){
+            logger.info("Generating new Clearing House Process");
+            String generatedId = pidGenerator();
+            processRepository.save(new ClearingHouseProcess(generatedId, contract.getId(), contract.getProvider(), contract.getConsumer()));
+            logger.info("Clearing House Process is generated successfully");
+            return generatedId;
+        }
+        else {
+            String getProcessID = process.get().getProcessID();
+            logger.info("Clearing House Process is already generated");
+            return getProcessID;
+        }
+    }
+
+    private Optional<ClearingHouseProcess> getProcessByContractId(String contractId) {
+        return processRepository.findByContractID(contractId);
+    }
+
+    public ClearingHouseProcess getProcessbyId(String processID){
+        Optional<ClearingHouseProcess> clearingHouseProcess = processRepository.findById(processID);
+        if(!clearingHouseProcess.isEmpty()){
             logger.info("Fetching Clearing House Process");
-            ClearingHouseProcess clearingHouseProcess = processRepository.findById(processID).get();
-            return clearingHouseProcess;
+            return clearingHouseProcess.get();
         }else {
-            logger.warning("Returning null");
+            logger.info("Clearing House Process with id: " + processID + "does not exist in the record");
             return null;
         }
     }
 
-    String pidGenerator(Contract contract){
-        //TODO: Find better way to generate ID
-        return contract.getProviderId()+"CH_PID"+contract.getContractId();
+    String pidGenerator(){
+        String uuid = UUID.randomUUID().toString();
+        return uuid;
     }
 
-    Boolean isProcessExist(String generatedId){
-        if (processRepository.existsById(generatedId)){
-            logger.info("Clearing House Process exist in the record");
+    Boolean isContractValid(Contract contract){
+        return false;
+    }
+
+    Boolean validateDate(String date){
+        return false;
+    }
+
+    // TODO: DAPS?, Validate based on claim history of the connector
+    Boolean validateConnector(String consumerId){
+        if(findClaimByAccused(consumerId).isEmpty()){
             return true;
-        }
-        else {
-            logger.info("Clearing House Process does not exist in the record");
+        } else {
             return false;
         }
+    }
+
+    List<ClaimRequestStub> findClaimByAccused(String accusedID){
+        ResponseEntity<ClaimRequestStub[]> responseEntity = restTemplate.getForEntity(dataRouter_url + getClaimByAccused_uri + accusedID,ClaimRequestStub[].class);
+        return Arrays.asList(responseEntity.getBody());
+    }
+
+    Boolean validateTransactionPayment(String paymentId){
+        return false;
     }
 
 }

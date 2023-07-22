@@ -18,8 +18,8 @@ public class ClearingController {
     }
 
     @GetMapping(path="/clearing/getProcess")
-    public ClearingHouseProcess getProcess(@RequestParam String processID){
-        return clearingService.getProcess(processID);
+    public ClearingHouseProcess getProcess(@RequestParam String processId){
+        return clearingService.getProcessbyId(processId);
     }
 
     @PostMapping(path="/clearing/readContract")
@@ -27,8 +27,8 @@ public class ClearingController {
        return contract;
     }
 
-    @PostMapping(path="/clearing/generatePid")
-    public String generateProcessID(@RequestBody Contract contract){
-        return clearingService.generateProcess(contract);
+    @PostMapping(path="/clearing/clearTransaction")
+    public Boolean clearTransaction(@RequestBody Contract contract){
+        return clearingService.clearTransaction(contract);
     }
 }

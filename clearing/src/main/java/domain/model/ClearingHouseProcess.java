@@ -16,8 +16,10 @@ import org.springframework.stereotype.Repository;
 public class ClearingHouseProcess {
     @Id
     String processID;
-    String processOwner;
+    String contractID;
+    String providerID;
+    String consumerID;
 
     //TODO: make this immutable
-    Contract contractPayload;
+    //Contract contractPayload;
 }

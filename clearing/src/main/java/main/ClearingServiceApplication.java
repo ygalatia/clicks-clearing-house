@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
-@ComponentScan({"controller, domain, service"})
+@ComponentScan({"config, controller, domain, service"})
 @EnableMongoRepositories(basePackageClasses = ProcessRepository.class)
 public class ClearingServiceApplication {
         public static void main(String[] args) {

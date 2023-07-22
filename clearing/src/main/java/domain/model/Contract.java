@@ -10,9 +10,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Contract {
-    String contractId;
-    String providerId;
-    Boolean isValid;
+    String id;
+    String Resourceid;
+    String title;
     String startDate;
     String endDate;
+    String consumer;
+    String provider;
 }

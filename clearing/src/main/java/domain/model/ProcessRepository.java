@@ -11,4 +11,6 @@ public interface ProcessRepository extends MongoRepository<ClearingHouseProcess,
     Optional<ClearingHouseProcess> findById(String processId);
     List<ClearingHouseProcess> findAll();
 
+    Optional<ClearingHouseProcess> findByContractID(String contractID);
+
 }
