@@ -1,4 +1,4 @@
 package domain;
 
-public record ContractStub(String contractID, String providerID, Boolean isValid, String startDate, String endDate ) {
+public record ContractStub(String id, String Resourceid, String title, String startDate, String endDate, String consumer, String provider ) {
 }

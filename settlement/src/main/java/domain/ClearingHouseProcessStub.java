@@ -1,4 +1,7 @@
 package domain;
 
-public record ClearingHouseProcessStub(String processID, String ownerID, ContractStub contractPayload) {
+public record ClearingHouseProcessStub(String id,
+        String Resourceid, String title,
+        String startDate, String endDate,
+        String consumer, String provider) {
 }
