@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface LogRepository extends MongoRepository<Log, String> {
 
     Optional<Log> findById(String logId);
-    List<Log> findByProcessId(String processId);
+    List<Log> findByClearingHouseProcessId(String processId);
 }

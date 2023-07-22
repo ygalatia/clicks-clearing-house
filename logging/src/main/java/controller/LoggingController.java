@@ -14,14 +14,14 @@ public class LoggingController {
     @Autowired
     LoggingService loggingService;
 
-    @GetMapping(path = "/logging/")
+    @GetMapping(path = "/logging")
     public String logging(){
         return "Logging service";
     }
 
     @PostMapping(path = "/logging/recordTransaction")
-    public Log recordTransaction(@RequestParam String processId, @RequestBody TransactionMetadata transactionMetadata){
-        return loggingService.storeLog(transactionMetadata, processId);
+    public Log recordTransaction(@RequestBody Log logBody){
+        return loggingService.storeLog(logBody);
     }
 
     @GetMapping(path = "logging/getLogRecord")

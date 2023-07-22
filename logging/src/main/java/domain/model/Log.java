@@ -16,6 +16,14 @@ public class Log {
 
     @Id
     String logId;
-    String processId;
-    TransactionMetadata transactionMetadata;
+    String clearingHouseProcessId;
+    String logOwnerId;
+    String accessDateTime;
+    Boolean dateAccessValid;
+    Boolean numAccessValid;
+    Boolean providerReachable;
+    Boolean consumerReachable;
+    String remarks;
+    ArtifactStub artifactBefore;
+    ArtifactStub artifactAfter;
 }

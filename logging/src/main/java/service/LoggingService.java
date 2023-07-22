@@ -17,10 +17,8 @@ public class LoggingService {
     @Autowired
     LogRepository logRepository;
 
-    public Log storeLog(TransactionMetadata transactionMetadata, String processId){
-        //TODO: Add user validation, only valid/authorised user able to store log
-        logger.info("Storing transaction with id: "+transactionMetadata.getTransactionId());
-        return logRepository.save(new Log("log123", processId, transactionMetadata));
+    public Log storeLog(Log logBody){
+        return logRepository.save(logBody);
     }
 
     public Log getStoredLogById(String logId){
@@ -34,7 +32,7 @@ public class LoggingService {
 
     public List<Log> getStoredLogsByProcessId(String processId){
         //TODO: Add user validation, only valid/authorised user able to get log list
-        return logRepository.findByProcessId(processId);
+        return logRepository.findByClearingHouseProcessId(processId);
     }
 
     Boolean isLogExist(String logId){
