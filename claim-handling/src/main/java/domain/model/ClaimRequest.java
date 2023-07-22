@@ -16,11 +16,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class ClaimRequest {
     @Id
     String claimRequestID;
-    String claimOwnerID;
-    String claimDestinationID;
+    String claimantId;
+    String accusedId;
     String claimDescription;
     String claimDate;
-    ClaimRequestStatus status;
-    TransactionLogStub logPayload;
+    String status;
+    String transactionLogId;
 }
 
