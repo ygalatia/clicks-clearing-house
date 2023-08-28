@@ -2,4 +2,5 @@ rootProject.name = 'clearinghouse'
 include 'clearing'
 include 'settlement'
 include 'logging'
+include 'claim-handling'
 
